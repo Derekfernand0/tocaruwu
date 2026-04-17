@@ -63,7 +63,7 @@ class GlowingBall extends StatelessWidget {
                     skinAssetPath!,
                     fit: BoxFit.cover,
                     filterQuality: FilterQuality.low,
-                    errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                    errorBuilder: (_, _, _) => const SizedBox.shrink(),
                   ),
                 ),
               Container(

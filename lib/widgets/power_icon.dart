@@ -87,25 +87,18 @@ class PowerIcon extends StatelessWidget {
               color: color.withOpacity(0.55),
               blurRadius: 18,
               spreadRadius: 2,
-            )
+            ),
           ],
         ),
         child: ClipOval(
           child: Image.asset(
             _asset(),
             fit: BoxFit.contain,
-            errorBuilder: (_, __, ___) {
+            errorBuilder: (_, _, _) {
               return Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: color,
-                ),
+                decoration: BoxDecoration(shape: BoxShape.circle, color: color),
                 alignment: Alignment.center,
-                child: Icon(
-                  _fallbackIcon(),
-                  color: Colors.white,
-                  size: 22,
-                ),
+                child: Icon(_fallbackIcon(), color: Colors.white, size: 22),
               );
             },
           ),

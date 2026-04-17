@@ -5,10 +5,7 @@ import '../painters/background_dots_painter.dart';
 class GameBackground extends StatelessWidget {
   final UnlockableBackground background;
 
-  const GameBackground({
-    super.key,
-    required this.background,
-  });
+  const GameBackground({super.key, required this.background});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +26,7 @@ class GameBackground extends StatelessWidget {
             child: Image.asset(
               background.assetPath,
               fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) {
+              errorBuilder: (_, _, _) {
                 return CustomPaint(
                   painter: BackgroundDotsPainter(),
                   child: Container(),

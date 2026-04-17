@@ -116,7 +116,8 @@ class _GameScreenState extends State<GameScreen> {
       coins = prefs.getInt('coins') ?? 0;
       selectedSkinKey = prefs.getString('selected_skin') ?? 'default';
       selectedBackgroundKey = prefs.getString('selected_background') ?? 'stars';
-      unlockedSkins = (prefs.getStringList('unlocked_skins') ?? ['default']).toSet();
+      unlockedSkins = (prefs.getStringList('unlocked_skins') ?? ['default'])
+          .toSet();
       unlockedBackgrounds =
           (prefs.getStringList('unlocked_backgrounds') ?? ['stars']).toSet();
     });
@@ -130,7 +131,10 @@ class _GameScreenState extends State<GameScreen> {
     await prefs.setString('selected_skin', selectedSkinKey);
     await prefs.setString('selected_background', selectedBackgroundKey);
     await prefs.setStringList('unlocked_skins', unlockedSkins.toList());
-    await prefs.setStringList('unlocked_backgrounds', unlockedBackgrounds.toList());
+    await prefs.setStringList(
+      'unlocked_backgrounds',
+      unlockedBackgrounds.toList(),
+    );
   }
 
   void startWorldLoop() {
@@ -268,7 +272,10 @@ class _GameScreenState extends State<GameScreen> {
     final topReserved = safeTop + hudHeight + hudTopPadding + 18;
 
     final width = max(10.0, size.width - ballSize - paddingLeft - paddingRight);
-    final height = max(10.0, size.height - ballSize - topReserved - paddingBottom);
+    final height = max(
+      10.0,
+      size.height - ballSize - topReserved - paddingBottom,
+    );
 
     return Rect.fromLTWH(paddingLeft, topReserved, width, height);
   }
@@ -423,11 +430,11 @@ class _GameScreenState extends State<GameScreen> {
     Future.delayed(Duration(milliseconds: delay), () {
       if (!playing || disposed) return;
 
-        final count = selectedMode == GameMode.performance
+      final count = selectedMode == GameMode.performance
           ? 1
           : selectedMode == GameMode.chaos
-            ? 2 + _random.nextInt(2)
-            : (_random.nextDouble() < 0.30 ? 2 : 1);
+          ? 2 + _random.nextInt(2)
+          : (_random.nextDouble() < 0.30 ? 2 : 1);
 
       for (int i = 0; i < count; i++) {
         spawnSinglePower();
@@ -545,11 +552,7 @@ class _GameScreenState extends State<GameScreen> {
         gainedPoints = 0;
         combo = 0;
         timeLeft = max(0, timeLeft - 2);
-        addFloatingText(
-          position: center,
-          text: '-2s',
-          color: Colors.redAccent,
-        );
+        addFloatingText(position: center, text: '-2s', color: Colors.redAccent);
         setState(() {});
         if (timeLeft <= 0) endGame();
         return;
@@ -560,10 +563,10 @@ class _GameScreenState extends State<GameScreen> {
     final comboBonus = combo >= 20
         ? 3
         : combo >= 12
-            ? 2
-            : combo >= 6
-                ? 1
-                : 0;
+        ? 2
+        : combo >= 6
+        ? 1
+        : 0;
 
     gainedPoints += comboBonus;
 
@@ -743,7 +746,7 @@ class _GameScreenState extends State<GameScreen> {
               setState(() {});
             },
             child: const Text('OK'),
-          )
+          ),
         ],
       ),
     );
@@ -841,9 +844,7 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: playing ? buildGame() : buildMenu(),
-    );
+    return Scaffold(body: playing ? buildGame() : buildMenu());
   }
 
   Widget buildMenu() {
@@ -886,8 +887,10 @@ class _GameScreenState extends State<GameScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                const Text('Modos de juego',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                const Text(
+                  'Modos de juego',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
                 const SizedBox(height: 10),
                 Column(
                   children: GameMode.values.map((mode) {
@@ -902,7 +905,9 @@ class _GameScreenState extends State<GameScreen> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-                              color: selected ? Colors.cyanAccent : Colors.white12,
+                              color: selected
+                                  ? Colors.cyanAccent
+                                  : Colors.white12,
                               width: 1.4,
                             ),
                             color: selected
@@ -913,7 +918,9 @@ class _GameScreenState extends State<GameScreen> {
                             children: [
                               Icon(
                                 modeIcon(mode),
-                                color: selected ? Colors.cyanAccent : Colors.white70,
+                                color: selected
+                                    ? Colors.cyanAccent
+                                    : Colors.white70,
                               ),
                               const SizedBox(width: 12),
                               Expanded(
@@ -960,20 +967,25 @@ class _GameScreenState extends State<GameScreen> {
                     ),
                     child: const Text(
                       'START GAME',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 18),
-                const Text('Tienda de skins',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                const Text(
+                  'Tienda de skins',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
                 const SizedBox(height: 10),
                 SizedBox(
                   height: 150,
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     itemCount: GameData.skins.length,
-                    separatorBuilder: (_, __) => const SizedBox(width: 10),
+                    separatorBuilder: (_, _) => const SizedBox(width: 10),
                     itemBuilder: (_, i) {
                       final skin = GameData.skins[i];
                       final unlocked = unlockedSkins.contains(skin.key);
@@ -990,7 +1002,7 @@ class _GameScreenState extends State<GameScreen> {
                         preview: Image.asset(
                           skin.assetPath,
                           fit: BoxFit.contain,
-                          errorBuilder: (_, __, ___) {
+                          errorBuilder: (_, _, _) {
                             return Container(
                               width: 52,
                               height: 52,
@@ -1013,15 +1025,17 @@ class _GameScreenState extends State<GameScreen> {
                   ),
                 ),
                 const SizedBox(height: 18),
-                const Text('Tienda de fondos',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                const Text(
+                  'Tienda de fondos',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
                 const SizedBox(height: 10),
                 SizedBox(
                   height: 150,
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     itemCount: GameData.backgrounds.length,
-                    separatorBuilder: (_, __) => const SizedBox(width: 10),
+                    separatorBuilder: (_, _) => const SizedBox(width: 10),
                     itemBuilder: (_, i) {
                       final bg = GameData.backgrounds[i];
                       final unlocked = unlockedBackgrounds.contains(bg.key);
@@ -1042,7 +1056,7 @@ class _GameScreenState extends State<GameScreen> {
                             width: 86,
                             height: 52,
                             fit: BoxFit.cover,
-                            errorBuilder: (_, __, ___) {
+                            errorBuilder: (_, _, _) {
                               return Container(
                                 width: 86,
                                 height: 52,
@@ -1079,9 +1093,7 @@ class _GameScreenState extends State<GameScreen> {
       onTapDown: (details) => tapNearBall(details.localPosition),
       child: Stack(
         children: [
-          const RepaintBoundary(
-            child: SizedBox.expand(),
-          ),
+          const RepaintBoundary(child: SizedBox.expand()),
           GameBackground(background: currentBackground),
 
           RepaintBoundary(
@@ -1152,10 +1164,7 @@ class _GameScreenState extends State<GameScreen> {
               child: GestureDetector(
                 onTap: () => activatePower(power),
                 child: RepaintBoundary(
-                  child: PowerIcon(
-                    type: power.type,
-                    opacity: opacity,
-                  ),
+                  child: PowerIcon(type: power.type, opacity: opacity),
                 ),
               ),
             );
@@ -1189,7 +1198,8 @@ class _GameScreenState extends State<GameScreen> {
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        if (freeze) statusChip('Freeze', Colors.lightBlueAccent),
+                        if (freeze)
+                          statusChip('Freeze', Colors.lightBlueAccent),
                         if (doublePoints) statusChip('x2', Colors.orangeAccent),
                         if (doubleBall || selectedMode == GameMode.chaos)
                           statusChip('Double', Colors.purpleAccent),
@@ -1228,11 +1238,18 @@ class _GameScreenState extends State<GameScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(label,
-                style: TextStyle(fontSize: 11, color: Colors.white.withOpacity(0.65))),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 11,
+                color: Colors.white.withOpacity(0.65),
+              ),
+            ),
             const SizedBox(height: 3),
-            Text(value,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+            Text(
+              value,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+            ),
           ],
         ),
       ),
@@ -1250,7 +1267,11 @@ class _GameScreenState extends State<GameScreen> {
       ),
       child: Text(
         text,
-        style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 12),
+        style: TextStyle(
+          color: color,
+          fontWeight: FontWeight.bold,
+          fontSize: 12,
+        ),
       ),
     );
   }
@@ -1266,11 +1287,18 @@ class _GameScreenState extends State<GameScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label,
-              style: TextStyle(color: Colors.white.withOpacity(0.65), fontSize: 11)),
+          Text(
+            label,
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.65),
+              fontSize: 11,
+            ),
+          ),
           const SizedBox(height: 3),
-          Text(value,
-              style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 15)),
+          Text(
+            value,
+            style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
+          ),
         ],
       ),
     );
